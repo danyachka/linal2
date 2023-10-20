@@ -1,19 +1,22 @@
-import math
 from typing import Final
 import sympy as s
-import numpy as np
+import math
 import Utils
 
 # 1-8
-a: Final[float] = 1
-b: Final[float] = 2
+a: Final[float] = 2
+b: Final[float] = 3
 rotationAngle = 30
 
 # 9
 c: Final[float] = 3
 
+# 10
+d = 4
+
 examplePoint1: s.Matrix = s.Matrix([[2], [-1]])
 examplePoint2: s.Matrix = s.Matrix([[2], [2]])
+examplePoint3: s.Matrix = s.Matrix([[2], [3]])
 
 
 def m1():
@@ -21,9 +24,9 @@ def m1():
     alfa = math.atan(a)
     m = Utils.rotate(m, alfa)
 
-    i = examplePoint1
-    j = m * i
-    Utils.drawToPoints([i], [j], True)
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, True)
     return m
 
 
@@ -32,9 +35,9 @@ def m2():
     alfa = math.atan(a)
     m = Utils.rotate(m, alfa)
 
-    i = examplePoint1
-    j = m * i
-    Utils.drawToPoints([i], [j], True)
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, True)
     return m
 
 
@@ -44,18 +47,18 @@ def m3():
     cos = math.cos(alfa)
     m: s.Matrix = s.Matrix([[cos, sin], [-sin, cos]])
 
-    i = examplePoint1
-    j = m * i
-    Utils.drawToPoints([i], [j])
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j)
     return m
 
 
 def m4():
     m: s.Matrix = s.Matrix([[-1, 0], [0, -1]])
 
-    i = examplePoint1
-    j = m * i
-    Utils.drawToPoints([i], [j])
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j)
     return m
 
 
@@ -71,9 +74,9 @@ def m5():
 
     m = m * t
 
-    i = examplePoint1
-    j = m * i
-    Utils.drawToPoints([i], [j], True)
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, True)
     return m
 
 
@@ -83,9 +86,9 @@ def m6():
     m: s.Matrix = s.Matrix([[math.cos(alfa), math.cos(gamma)],
                             [math.sin(alfa), math.sin(gamma)]])
 
-    i = examplePoint2
-    j = m * i
-    Utils.drawToPoints([i], [j], True, True)
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, True, True)
     return m
 
 
@@ -95,9 +98,9 @@ def m7():
     m: s.Matrix = s.Matrix([[math.cos(alfa), math.cos(gamma)],
                             [math.sin(alfa), math.sin(gamma)]])
     m = m.inv()
-    i = examplePoint2
-    j = m * i
-    Utils.drawToPoints([i], [j], True, True)
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, True, True)
     return m
 
 
@@ -110,9 +113,9 @@ def m8():
                             [0, -1]])
     m = Utils.rotate(m, gamma)
 
-    i = examplePoint2
-    j = m * i
-    Utils.drawToPoints([i], [j], True, True)
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, True, True)
     return m
 
 
@@ -121,21 +124,79 @@ def m9():
     m: s.Matrix = s.Matrix([[scale, 0],
                             [0, scale]])
 
-    count = 100
-    angles = np.linspace(0, 2*math.pi, count)
-    x1 = 1 * np.cos(angles)
-    y1 = 1 * np.sin(angles)
-
-    x2 = np.empty((count))
-    y2 = np.empty((count))
-
-    v: s.Matrix = s.Matrix([[0], [0]])
-    for i in range(count):
-        v[0, 0] = x1[i]
-        v[1, 0] = y1[i]
-        v = m * v
-        x2[i] = v[0, 0]
-        y2[i] = v[1, 0]
-
-    Utils.drawCircles(x1, y1, "r", x2, y2, "g")
+    Utils.createCircleAndOtherPlot(m)
     return m
+
+
+def m10():
+    scaleX = 2**0.5 * d**0.5
+    scaleY = 0.5**0.5 * d**0.5
+    m: s.Matrix = s.Matrix([[scaleX, 0], [0, scaleY]])
+
+    Utils.createCircleAndOtherPlot(m)
+    return m
+
+
+def m11():
+    m: s.Matrix = s.Matrix([[0.5, 1], [1, 2]])
+
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, matrix=m)
+    return m
+
+
+def m12():
+    m: s.Matrix = s.Matrix([[0.5, 1], [0, 0.5]])
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, matrix=m)
+    return m
+
+
+def m13():
+    m: s.Matrix = s.Matrix([[0.5, -1], [1, 2]])
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, matrix=m)
+    return m
+
+
+def m14():
+    m: s.Matrix = s.Matrix([[1, 0], [0, 1]])
+    i = Utils.square
+    j = Utils.convertPoints(i, m)
+    Utils.drawColoredPoints(i, j, matrix=m)
+    return m
+
+
+def m15():
+    A: s.Matrix = s.Matrix([[1, 0], [0, -1]])
+    B: s.Matrix = s.Matrix([[1, 1], [2, 2]])
+
+    m15And17(A, B)
+    return
+
+
+def m16():
+    A: s.Matrix = s.Matrix([[1, 0], [0, 1]])
+    B: s.Matrix = s.Matrix([[1, 3], [1, 2]])
+
+    m15And17(A, B)
+    return
+
+
+def m15And17(A, B):
+    matrix1: s.Matrix = A * B
+    matrix2: s.Matrix = B * A
+    print("Первая матрица - " + str(A))
+    print("Вторая матрица - " + str(B))
+    print("A*B - " + str(matrix1))
+    Utils.printEigenValues(matrix1)
+    print("B*A - " + str(matrix2))
+    Utils.printEigenValues(matrix2)
+
+    i = Utils.square
+    j = Utils.convertPoints(i, matrix1)
+    k = Utils.convertPoints(i, matrix2)
+    Utils.drawColoredPoints(i, j, blue=k)

@@ -1,13 +1,19 @@
+from matplotlib import pyplot as plt
+from typing import Final
+import math
 import numpy as np
 import sympy as s
-from matplotlib import pyplot as plt
-from matplotlib import patches
 import matrixGenerator
 
-MAX_X_AND_Y = 5
+MAX_X_AND_Y: Final[float] = 5
+BIG_NUMBER: Final[float] = 120
+
+square: [s.Matrix] = [s.Matrix([[1], [1]]), s.Matrix([[-1], [1]]), s.Matrix([[-1], [-1]]), s.Matrix([[1], [-1]]),
+                      s.Matrix([[1], [1]])]
 
 
-def drawToPoints(red: [s.Matrix], green: [s.Matrix], lineA=False, lineB=False):
+def drawColoredPoints(red: [s.Matrix], green: [s.Matrix], lineA=False, lineB=False,
+                      matrix: s.Matrix = None, blue: [s.Matrix] = None):
     fig = plt.figure(figsize=(7, 7))
     greenX = [green[i][0, 0] for i in range(len(green))]
     greenY = [green[i][1, 0] for i in range(len(green))]
@@ -15,8 +21,8 @@ def drawToPoints(red: [s.Matrix], green: [s.Matrix], lineA=False, lineB=False):
     redY = [red[i][1, 0] for i in range(len(red))]
 
     ax = fig.add_subplot()
-    ax.plot(greenX, greenY, "D", color="green")
-    ax.plot(redX, redY, "D", color="red")
+    ax.plot(redX, redY, "-o", color="red", label="До преобразований")
+    ax.plot(greenX, greenY, "--", color="green", label="Преобразованный график")
     ax.grid()
 
     if lineA:
@@ -27,19 +33,31 @@ def drawToPoints(red: [s.Matrix], green: [s.Matrix], lineA=False, lineB=False):
         x = MAX_X_AND_Y
         y = matrixGenerator.b * x
         ax.plot([-x, x], [-y, y], "--", color="Blue")
+    if matrix is not None:
+        array = getEigenvectors(matrix)
+        for v in array:
+            x = BIG_NUMBER * v[0, 0]
+            y = BIG_NUMBER * v[1, 0]
+            ax.plot([-x, x], [-y, y], "--", color="Blue", label="Ось собственного вектора")
+    if blue is not None:
+        blueX = [blue[i][0, 0] for i in range(len(blue))]
+        blueY = [blue[i][1, 0] for i in range(len(blue))]
+        ax.plot(blueX, blueY, "-.", color="blue", label="Второй вариант преобразований")
+    ax.legend()
 
     ax.set_xlim([-MAX_X_AND_Y, MAX_X_AND_Y])
     ax.set_ylim([-MAX_X_AND_Y, MAX_X_AND_Y])
 
 
-def drawCircles(x1, y1, color: str, x2, y2, color2: str):
+def drawPlots(x1, y1, x2, y2):
     fig = plt.figure(figsize=(7, 7))
     ax = fig.add_subplot()
 
-    ax.plot(x1, y1, "--", color=color)
-    ax.plot(x2, y2, "--", color=color2)
+    ax.plot(x1, y1, "-", color="r", label="До преобразований")
+    ax.plot(x2, y2, "-.", color="g", label="Преобразованный график")
 
     ax.grid()
+    ax.legend()
 
     ax.set_xlim([-MAX_X_AND_Y, MAX_X_AND_Y])
     ax.set_ylim([-MAX_X_AND_Y, MAX_X_AND_Y])
@@ -57,3 +75,57 @@ def rotate(m: s.Matrix, alfa):
 
     m = t.inv() * m * t
     return m
+
+
+def createCircleAndOtherPlot(m: s.Matrix):
+    count = 100
+    angles = np.linspace(0, 2 * math.pi, count)
+    x1 = 1 * np.cos(angles)
+    y1 = 1 * np.sin(angles)
+    x2 = np.empty((count))
+    y2 = np.empty((count))
+
+    v: s.Matrix = s.Matrix([[0], [0]])
+    for i in range(count):
+        v[0, 0] = x1[i]
+        v[1, 0] = y1[i]
+        v = m * v
+        x2[i] = v[0, 0]
+        y2[i] = v[1, 0]
+
+    drawPlots(x1, y1, x2, y2)
+
+
+def getEigenvectors(m: s.Matrix) -> [s.Matrix]:
+    array = m.eigenvects()
+    sym_eigenvectors: [s.Matrix] = []
+    for tup in array:
+        for v in tup[2]:
+            numbers = list(v)
+            if not hasComplex(numbers):
+                sym_eigenvectors.append(v)
+    return sym_eigenvectors
+
+
+def hasComplex(array: []) -> bool:
+    for n in array:
+        if "I" in str(n):
+            return True
+    return False
+
+
+def convertPoints(array, m: s.Matrix) -> [s.Matrix]:
+    result = []
+    for v in array:
+        result.append(m * v)
+    return result
+
+
+def printEigenValues(m: s.Matrix):
+    vals = m.eigenvects()
+    pos = 1
+    for value in vals:
+        print(str(pos) + ") Собственное число - " + str(value[0]) + ". Собственные векторы:")
+        for v in value[2]:
+            print(v)
+        pos += 1
