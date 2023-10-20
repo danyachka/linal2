@@ -191,9 +191,9 @@ def m15And17(A, B):
     matrix2: s.Matrix = B * A
     print("Первая матрица - " + str(A))
     print("Вторая матрица - " + str(B))
-    print("A*B - " + str(matrix1))
+    print("\nA*B - " + str(matrix1))
     Utils.printEigenValues(matrix1)
-    print("B*A - " + str(matrix2))
+    print("\nB*A - " + str(matrix2))
     Utils.printEigenValues(matrix2)
 
     i = Utils.square

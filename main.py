@@ -27,15 +27,16 @@ def initAllMatrix():
         if m is not None:
             print("Матрица переобразований - " + str(m))
 
-        if pos in needCore:
-            print("Ядро матрицы: ")
-        if pos in needEigenValues and m is not None:
-            Utils.printEigenValues(m)
         if pos in needDet:
-            print("Определитель - " + str(m.det))
+            print("\nОпределитель - " + str(round(m.det(), 2)))
+        if pos in needCore:
+            Utils.printCoreAndRange(m)
+        if pos in needEigenValues and m is not None:
+            print()
+            Utils.printEigenValues(m)
         print("\n")
 
 
 if __name__ == '__main__':
+    s.init_printing(use_unicode=True)
     initAllMatrix()
-    plt.show()

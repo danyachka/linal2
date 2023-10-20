@@ -8,8 +8,8 @@ import matrixGenerator
 MAX_X_AND_Y: Final[float] = 5
 BIG_NUMBER: Final[float] = 120
 
-square: [s.Matrix] = [s.Matrix([[1], [1]]), s.Matrix([[-1], [1]]), s.Matrix([[-1], [-1]]), s.Matrix([[1], [-1]]),
-                      s.Matrix([[1], [1]])]
+square: [s.Matrix] = [s.Matrix([[1], [1]]), s.Matrix([[0], [2]]), s.Matrix([[-1], [1]]), s.Matrix([[-0.5], [-1]]),
+                      s.Matrix([[0.5], [-1]]), s.Matrix([[1], [1]])]
 
 
 def drawColoredPoints(red: [s.Matrix], green: [s.Matrix], lineA=False, lineB=False,
@@ -22,7 +22,7 @@ def drawColoredPoints(red: [s.Matrix], green: [s.Matrix], lineA=False, lineB=Fal
 
     ax = fig.add_subplot()
     ax.plot(redX, redY, "-o", color="red", label="До преобразований")
-    ax.plot(greenX, greenY, "--", color="green", label="Преобразованный график")
+    ax.plot(greenX, greenY, ":o", color="green", label="Преобразованный график")
     ax.grid()
 
     if lineA:
@@ -47,6 +47,7 @@ def drawColoredPoints(red: [s.Matrix], green: [s.Matrix], lineA=False, lineB=Fal
 
     ax.set_xlim([-MAX_X_AND_Y, MAX_X_AND_Y])
     ax.set_ylim([-MAX_X_AND_Y, MAX_X_AND_Y])
+    plt.show()
 
 
 def drawPlots(x1, y1, x2, y2):
@@ -61,6 +62,7 @@ def drawPlots(x1, y1, x2, y2):
 
     ax.set_xlim([-MAX_X_AND_Y, MAX_X_AND_Y])
     ax.set_ylim([-MAX_X_AND_Y, MAX_X_AND_Y])
+    plt.show()
 
 
 def rotate(m: s.Matrix, alfa):
@@ -124,8 +126,26 @@ def convertPoints(array, m: s.Matrix) -> [s.Matrix]:
 def printEigenValues(m: s.Matrix):
     vals = m.eigenvects()
     pos = 1
+    print("Спектральный анализ:")
     for value in vals:
-        print(str(pos) + ") Собственное число - " + str(value[0]) + ". Собственные векторы:")
+        print(str(pos) + ") Собственное число - " + str(round(value[0], 2)) + ". Собственные векторы:")
         for v in value[2]:
-            print(v)
+            print("\t" + str(list(v)))
         pos += 1
+
+
+def printCoreAndRange(m: s.Matrix):
+    nullspace = m.nullspace()
+    if len(nullspace) == 0:
+        nullspace.append("{0}")
+    span = m.columnspace()
+    if len(span) == 0:
+        span.append("{0}")
+
+    print("\nЯдро матрицы:")
+    for v in nullspace:
+        print("\t" + str(list(v)))
+
+    print("\nОбраз матрицы:")
+    for v in span:
+        print("\t" + str(list(v)))
