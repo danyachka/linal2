@@ -26,7 +26,8 @@ def m1():
 
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, True)
+    plots = [Utils.Plot(i, Utils.Color.red, m=m), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 1, True)
     return m
 
 
@@ -37,7 +38,8 @@ def m2():
 
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, True)
+    plots = [Utils.Plot(i, Utils.Color.red), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 2, True)
     return m
 
 
@@ -49,7 +51,8 @@ def m3():
 
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j)
+    plots = [Utils.Plot(i, Utils.Color.red), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 3)
     return m
 
 
@@ -58,7 +61,8 @@ def m4():
 
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j)
+    plots = [Utils.Plot(i, Utils.Color.red), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 4)
     return m
 
 
@@ -76,7 +80,8 @@ def m5():
 
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, True)
+    plots = [Utils.Plot(i, Utils.Color.red), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 5, True)
     return m
 
 
@@ -88,7 +93,8 @@ def m6():
 
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, True, True)
+    plots = [Utils.Plot(i, Utils.Color.red), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 6, True, True)
     return m
 
 
@@ -100,7 +106,8 @@ def m7():
     m = m.inv()
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, True, True)
+    plots = [Utils.Plot(i, Utils.Color.red), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 7, True, True)
     return m
 
 
@@ -115,7 +122,8 @@ def m8():
 
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, True, True)
+    plots = [Utils.Plot(i, Utils.Color.red), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 8, True, True)
     return m
 
 
@@ -124,7 +132,7 @@ def m9():
     m: s.Matrix = s.Matrix([[scale, 0],
                             [0, scale]])
 
-    Utils.createCircleAndOtherPlot(m)
+    Utils.createCircleAndOtherPlot(m, 9)
     return m
 
 
@@ -133,7 +141,7 @@ def m10():
     scaleY = 0.5**0.5 * d**0.5
     m: s.Matrix = s.Matrix([[scaleX, 0], [0, scaleY]])
 
-    Utils.createCircleAndOtherPlot(m)
+    Utils.createCircleAndOtherPlot(m, 10)
     return m
 
 
@@ -142,7 +150,8 @@ def m11():
 
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, matrix=m)
+    plots = [Utils.Plot(i, Utils.Color.red, m=m), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 11)
     return m
 
 
@@ -150,7 +159,8 @@ def m12():
     m: s.Matrix = s.Matrix([[0.5, 1], [0, 0.5]])
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, matrix=m)
+    plots = [Utils.Plot(i, Utils.Color.red, m=m), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 12)
     return m
 
 
@@ -158,7 +168,8 @@ def m13():
     m: s.Matrix = s.Matrix([[0.5, -1], [1, 2]])
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, matrix=m)
+    plots = [Utils.Plot(i, Utils.Color.red, m=m), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 13)
     return m
 
 
@@ -166,7 +177,8 @@ def m14():
     m: s.Matrix = s.Matrix([[1, 0], [0, 1]])
     i = Utils.square
     j = Utils.convertPoints(i, m)
-    Utils.drawColoredPoints(i, j, matrix=m)
+    plots = [Utils.Plot(i, Utils.Color.red, m=m), Utils.Plot(j, Utils.Color.green)]
+    Utils.drawColoredPlots(plots, 14)
     return m
 
 
@@ -174,7 +186,7 @@ def m15():
     A: s.Matrix = s.Matrix([[1, 0], [0, -1]])
     B: s.Matrix = s.Matrix([[1, 1], [2, 2]])
 
-    m15And17(A, B)
+    m15And16(A, B, 15)
     return
 
 
@@ -182,11 +194,11 @@ def m16():
     A: s.Matrix = s.Matrix([[1, 0], [0, 1]])
     B: s.Matrix = s.Matrix([[1, 3], [1, 2]])
 
-    m15And17(A, B)
+    m15And16(A, B, 16)
     return
 
 
-def m15And17(A, B):
+def m15And16(A, B, number):
     matrix1: s.Matrix = A * B
     matrix2: s.Matrix = B * A
     print("Первая матрица - " + str(A))
@@ -199,4 +211,12 @@ def m15And17(A, B):
     i = Utils.square
     j = Utils.convertPoints(i, matrix1)
     k = Utils.convertPoints(i, matrix2)
-    Utils.drawColoredPoints(i, j, blue=k)
+    plots = [Utils.Plot(i, Utils.Color.red), Utils.Plot(j, Utils.Color.green, m=matrix1, plotName="A*B"),
+             Utils.Plot(k, Utils.Color.blue, m=matrix2, plotName="B*A")]
+    Utils.drawColoredPlots(plots, number)
+
+    j = Utils.convertPoints(i, A)
+    k = Utils.convertPoints(i, B)
+    plots = [Utils.Plot(j, Utils.Color.green, m=matrix1, plotName="A"),
+             Utils.Plot(k, Utils.Color.blue, m=matrix2, plotName="B")]
+    Utils.drawColoredPlots(plots, number)
