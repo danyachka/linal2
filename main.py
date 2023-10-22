@@ -3,8 +3,8 @@ from colorama import Fore, Style
 from typing import Final
 import sympy as s
 
-import Utils
-import matrixGenerator as mG
+import utils
+import matrix_generator as mG
 
 funcList: []
 matrixList = [s.Matrix]
@@ -30,10 +30,10 @@ def initAllMatrix():
         if pos in needDet:
             print("\nОпределитель - " + str(round(m.det(), 2)))
         if pos in needCore:
-            Utils.printCoreAndRange(m)
+            utils.printCoreAndRange(m)
         if pos in needEigenValues and m is not None:
             print()
-            Utils.printEigenValues(m)
+            utils.printEigenValues(m)
         print("\n")
 
 

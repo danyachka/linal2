@@ -4,7 +4,7 @@ from enum import Enum
 import math
 import numpy as np
 import sympy as s
-import matrixGenerator
+import matrix_generator
 
 MAX_X_AND_Y: Final[float] = 5
 BIG_NUMBER: Final[float] = 120
@@ -48,11 +48,11 @@ def drawColoredPlots(plots: [Plot], number: int, lineA=False, lineB=False):
 
     if lineA:
         x = MAX_X_AND_Y
-        y = matrixGenerator.a * x
+        y = matrix_generator.a * x
         ax.plot([-x, x], [-y, y], "--", color=Color.black.value, label="y=ax")
     if lineB:
         x = MAX_X_AND_Y
-        y = matrixGenerator.b * x
+        y = matrix_generator.b * x
         ax.plot([-x, x], [-y, y], "--", color=Color.black.value, label="y=bx")
 
     for i in range(len(plots)):
